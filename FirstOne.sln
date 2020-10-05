@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contextos", "Contextos", "{2AD9362F-265B-4855-AFB3-1634283D9F4D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cadastros", "Cadastros", "{E651FD48-33B4-42CF-B404-CE0ED7D990FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5339DE11-ABD5-4D2A-9E4E-BE3DB45D84ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C260CC65-836E-4C02-B4DE-BDD752C4C309}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstOne.Cadastros.Api", "src\FirstOne.Cadastros.Api\FirstOne.Cadastros.Api.csproj", "{279839AA-A736-486E-ABC2-0FDF67574425}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{279839AA-A736-486E-ABC2-0FDF67574425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{279839AA-A736-486E-ABC2-0FDF67574425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{279839AA-A736-486E-ABC2-0FDF67574425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{279839AA-A736-486E-ABC2-0FDF67574425}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E651FD48-33B4-42CF-B404-CE0ED7D990FD} = {2AD9362F-265B-4855-AFB3-1634283D9F4D}
+		{5339DE11-ABD5-4D2A-9E4E-BE3DB45D84ED} = {E651FD48-33B4-42CF-B404-CE0ED7D990FD}
+		{C260CC65-836E-4C02-B4DE-BDD752C4C309} = {E651FD48-33B4-42CF-B404-CE0ED7D990FD}
+		{279839AA-A736-486E-ABC2-0FDF67574425} = {5339DE11-ABD5-4D2A-9E4E-BE3DB45D84ED}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {22141657-50D6-4443-A449-6F32BD1CA91A}
+	EndGlobalSection
+EndGlobal

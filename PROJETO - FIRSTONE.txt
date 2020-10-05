@@ -1,0 +1,22 @@
+PROJETO - FIRSTONE
+
+*** GITHUB
+1) Acessamos o GitHub pessoal;
+2) Clicamos no icone do GITHub lado esquerdo superior;
+3) Clicamos no botão "New";
+4) Preenchemos o RepositoryName e depois clicamos em "Create Repository";
+
+*** LOCAL
+1) CRIAR PASTA NO REPOSITORIO LOCAL;
+2) NOME = "FistOne";
+3) criado dentro desta pasta um arquivo chamado ".gitignore";
+4)copiar o material de: "https://github.com/github/gitignore/blob/master/VisualStudio.gitignore" e salvar no arquivo de ".gitignore";
+5) criar dentro desta pasta o arquivo "README.md" e salvar qualquer texto dentro deste, no caso usamos: "FirstOne";
+6) abrimos o cmd dentro desta pasta;
+7) fazemos os seguintes comandos;
+8) git add .
+9) git commit -m "first commit"
+10) git branch -M main
+11) git remote origin https://github.com/fabiodevigilli/FirstOne.git
+12) git push -u origin main
+13) dotnet new sln -n FirstOne
