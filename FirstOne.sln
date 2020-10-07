@@ -13,15 +13,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C260CC65
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstOne.Cadastros.Api", "src\FirstOne.Cadastros.Api\FirstOne.Cadastros.Api.csproj", "{279839AA-A736-486E-ABC2-0FDF67574425}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstOne.Cadastros.Domain", "src\FirstOne.Cadastros.Domain\FirstOne.Cadastros.Domain.csproj", "{5BE68C29-325C-40A3-BD6C-1F958D53B5C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstOne.Cadastros.Domain", "src\FirstOne.Cadastros.Domain\FirstOne.Cadastros.Domain.csproj", "{5BE68C29-325C-40A3-BD6C-1F958D53B5C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstOne.Cadastros.Infra.Data", "src\FirstOne.Cadastros.Infra.Data\FirstOne.Cadastros.Infra.Data.csproj", "{84907526-CF57-459D-BC78-F17EFC6EEB6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstOne.Cadastros.Infra.Data", "src\FirstOne.Cadastros.Infra.Data\FirstOne.Cadastros.Infra.Data.csproj", "{84907526-CF57-459D-BC78-F17EFC6EEB6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstOne.Cadastros.Application", "src\FirstOne.Cadastros.Application\FirstOne.Cadastros.Application.csproj", "{A2EBB67D-3194-480A-AA5E-84E9D47E4E7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstOne.Cadastros.Application", "src\FirstOne.Cadastros.Application\FirstOne.Cadastros.Application.csproj", "{A2EBB67D-3194-480A-AA5E-84E9D47E4E7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstOne.Cadastros.Domain.Tests", "tests\FirstOne.Cadastros.Domain.Tests\FirstOne.Cadastros.Domain.Tests.csproj", "{CB649B0B-FF9F-495F-B2B4-E64D02A17176}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstOne.Cadastros.Domain.Tests", "tests\FirstOne.Cadastros.Domain.Tests\FirstOne.Cadastros.Domain.Tests.csproj", "{CB649B0B-FF9F-495F-B2B4-E64D02A17176}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstOne.Cadastros.Application.Tests", "tests\FirstOne.Cadastros.Application.Tests\FirstOne.Cadastros.Application.Tests.csproj", "{D981F671-F800-42AA-9C44-2653C271D53C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstOne.Cadastros.Application.Tests", "tests\FirstOne.Cadastros.Application.Tests\FirstOne.Cadastros.Application.Tests.csproj", "{D981F671-F800-42AA-9C44-2653C271D53C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstOne.Cadastros.Api.Tests", "tests\FirstOne.Cadastros.Api.Tests\FirstOne.Cadastros.Api.Tests.csproj", "{FF4FD39B-BC3D-4932-9062-D942C13E539F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{D981F671-F800-42AA-9C44-2653C271D53C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D981F671-F800-42AA-9C44-2653C271D53C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D981F671-F800-42AA-9C44-2653C271D53C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF4FD39B-BC3D-4932-9062-D942C13E539F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF4FD39B-BC3D-4932-9062-D942C13E539F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF4FD39B-BC3D-4932-9062-D942C13E539F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF4FD39B-BC3D-4932-9062-D942C13E539F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{A2EBB67D-3194-480A-AA5E-84E9D47E4E7A} = {5339DE11-ABD5-4D2A-9E4E-BE3DB45D84ED}
 		{CB649B0B-FF9F-495F-B2B4-E64D02A17176} = {C260CC65-836E-4C02-B4DE-BDD752C4C309}
 		{D981F671-F800-42AA-9C44-2653C271D53C} = {C260CC65-836E-4C02-B4DE-BDD752C4C309}
+		{FF4FD39B-BC3D-4932-9062-D942C13E539F} = {C260CC65-836E-4C02-B4DE-BDD752C4C309}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22141657-50D6-4443-A449-6F32BD1CA91A}

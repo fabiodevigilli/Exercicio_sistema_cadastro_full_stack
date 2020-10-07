@@ -1,3 +1,4 @@
+using FirstOne.Cadastros.Api.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,8 @@ namespace FirstOne.Cadastros.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            DependencyInjectionConfig.RegisterServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

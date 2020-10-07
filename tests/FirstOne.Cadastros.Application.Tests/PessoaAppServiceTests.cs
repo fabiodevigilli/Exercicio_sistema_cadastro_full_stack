@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FirstOne.Cadastros.Application.AutoMapper;
 using FirstOne.Cadastros.Application.Services;
+using FirstOne.Cadastros.Application.ViewModels;
 using FirstOne.Cadastros.Domain.Entities;
 using FirstOne.Cadastros.Domain.Interfaces;
 using Moq;
@@ -51,5 +52,22 @@ namespace FirstOne.Cadastros.Application.Tests
             _autoMocker.GetMock<IPessoaRepository>().Verify(e => e.ObterTodos(), Times.Once);
             Assert.Equal(2, result.Count());
         }
+
+        [Fact]
+        public void Deve_Adicionar_Pessoa()
+        {
+            // Arrange
+            var pessoaViewModel = new PessoaViewModel()
+            {
+                Nome = "Pessoa 1"
+            };
+
+            // Act
+            var result = _pessoaAppService.Adicionar(pessoaViewModel);
+
+            // Assert
+            Assert.True(result.IsValid);
+        }
+
     }
 }

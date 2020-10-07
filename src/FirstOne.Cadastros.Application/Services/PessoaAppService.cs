@@ -2,6 +2,8 @@
 using FirstOne.Cadastros.Application.Interfaces;
 using FirstOne.Cadastros.Application.ViewModels;
 using FirstOne.Cadastros.Domain.Interfaces;
+using FluentValidation.Results;
+using System;
 using System.Collections.Generic;
 
 namespace FirstOne.Cadastros.Application.Services
@@ -18,9 +20,14 @@ namespace FirstOne.Cadastros.Application.Services
             _pessoaRepository = pessoaRepository;
         }
 
+        public ValidationResult Adicionar(PessoaViewModel pessoaViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<PessoaViewModel> ObterTodos()
         {
             return _mapper.Map<IEnumerable<PessoaViewModel>>(_pessoaRepository.ObterTodos());
-        }
+        }       
     }
 }
