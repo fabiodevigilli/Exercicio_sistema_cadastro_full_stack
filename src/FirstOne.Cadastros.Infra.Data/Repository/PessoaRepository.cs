@@ -7,9 +7,9 @@ namespace FirstOne.Cadastros.Infra.Data.Repository
 {
     public class PessoaRepository : IPessoaRepository
     {
-        public void Adicionar()
+        public void Adicionar(Pessoa pessoa)
         {
-            throw new NotImplementedException();
+            
         }
 
         public IEnumerable<Pessoa> ObterTodos()

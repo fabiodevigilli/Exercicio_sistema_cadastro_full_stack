@@ -1,6 +1,9 @@
 ﻿using FirstOne.Cadastros.Api.Controllers;
 using FirstOne.Cadastros.Application.Interfaces;
 using FirstOne.Cadastros.Application.ViewModels;
+using FirstOne.Cadastros.Domain.Command;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 using Moq.AutoMock;
 using System;
 using System.Collections.Generic;
@@ -39,6 +42,30 @@ namespace FirstOne.Cadastros.Api.Tests.Controllers
 
             // Assert
             Assert.Single(result);
+        }
+
+        [Fact(DisplayName = "Adicionar_Pessoas_Deve_Falhar")]
+        [Trait("Categoria", "Pessoacontroller")]
+        public void Adicionar_Pessoas_Deve_Falhar()
+        {
+            // Arrange
+            var pessoa = new PessoaViewModel()
+            {
+                Nome = ""                
+            };
+
+            var command = new AdicionarPessoaCommand(pessoa.Nome);
+            command.IsValid();
+
+            _autoMocker.GetMock<IPessoaAppService>().Setup(e => e.Adicionar(It.IsAny<PessoaViewModel>())).Returns(command.ValidationResult);
+
+            // Act
+            var result = _pessoaController.Adicionar(pessoa);
+
+            // Assert
+            var erro = result as UnprocessableEntityObjectResult;
+            Assert.NotNull(erro);
+            Assert.Equal(422, erro.StatusCode);
         }
     }
 }

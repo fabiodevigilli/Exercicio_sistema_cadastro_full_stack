@@ -4,6 +4,7 @@ using FirstOne.Cadastros.Application.Services;
 using FirstOne.Cadastros.Application.ViewModels;
 using FirstOne.Cadastros.Domain.Entities;
 using FirstOne.Cadastros.Domain.Interfaces;
+using FirstOne.Cadastros.Domain.Mediator;
 using Moq;
 using Moq.AutoMock;
 using System;
@@ -27,8 +28,9 @@ namespace FirstOne.Cadastros.Application.Tests
                 cfg.AddProfile(new DomainToViewModelMappingProfile()); 
             }).CreateMapper();
             var pessoaRepository = _autoMocker.GetMock<IPessoaRepository>();
+            var mediatorHandler = _autoMocker.GetMock<IMediatorHandler>();
 
-            _pessoaAppService = new PessoaAppService(mapper, pessoaRepository.Object);
+            _pessoaAppService = new PessoaAppService(mapper, pessoaRepository.Object, mediatorHandler.Object);
         }
 
 
@@ -53,7 +55,8 @@ namespace FirstOne.Cadastros.Application.Tests
             Assert.Equal(2, result.Count());
         }
 
-        [Fact]
+        [Fact(DisplayName = "Deve_Adicionar_Pessoa")]
+        [Trait("Categoria", "PessoaAppService")]
         public void Deve_Adicionar_Pessoa()
         {
             // Arrange
@@ -67,7 +70,26 @@ namespace FirstOne.Cadastros.Application.Tests
 
             // Assert
             Assert.True(result.IsValid);
+            _autoMocker.GetMock<IPessoaRepository>().Verify(e => e.Adicionar(It.IsAny<Pessoa>()), Times.Once);
         }
 
+        [Fact(DisplayName = "Nao_Deve_Adicionar_Pessoa_Validator_Nome")]
+        [Trait("Categoria", "PessoaAppService")]
+        public void Nao_Deve_Adicionar_Pessoa_Validator_Nome()
+        {
+            // Arrange
+            var pessoaViewModel = new PessoaViewModel()
+            {
+                Nome = ""
+            };
+
+            // Act
+            var result = _pessoaAppService.Adicionar(pessoaViewModel);
+
+            // Assert
+            Assert.False(result.IsValid);
+            Assert.Single(result.Errors);
+            Assert.Equal("Por favor, informe o Nome da Pessoa", result.Errors.First().ErrorMessage);
+        }
     }
 }
