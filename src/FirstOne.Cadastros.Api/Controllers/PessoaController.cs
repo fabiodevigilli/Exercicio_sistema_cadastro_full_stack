@@ -1,9 +1,11 @@
 ﻿using FirstOne.Cadastros.Application.Interfaces;
 using FirstOne.Cadastros.Application.ViewModels;
+using FirstOne.Cadastros.Domain.Messaging;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FirstOne.Cadastros.Api.Controllers
 {
@@ -12,10 +14,12 @@ namespace FirstOne.Cadastros.Api.Controllers
     public class PessoaController : ControllerBase
     {
         private readonly IPessoaAppService _pessoaAppService;
+        private readonly DomainNotificationHandler _domainNotificationHandler;
 
-        public PessoaController(IPessoaAppService pessoaAppService)
+        public PessoaController(IPessoaAppService pessoaAppService, INotificationHandler<DomainNotification> notificationHandler)
         {
             _pessoaAppService = pessoaAppService;
+            _domainNotificationHandler = (DomainNotificationHandler)notificationHandler;
         }
 
         [HttpGet]
@@ -25,18 +29,18 @@ namespace FirstOne.Cadastros.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Adicionar([FromBody] PessoaViewModel pessoaViewmodel)
+        public async Task<IActionResult> Adicionar([FromBody] PessoaViewModel pessoaViewmodel)
         {
-            var result =_pessoaAppService.Adicionar(pessoaViewmodel);
+            await _pessoaAppService.Adicionar(pessoaViewmodel);
 
-            if (result.IsValid)
+            if (_domainNotificationHandler.PossuiNotificacao())
             {
-                return Ok();
+                return UnprocessableEntity(new
+                {
+                    errors = _domainNotificationHandler.ObterNotificacoes().Select(e => e.Value)
+                });                
             }
-            return UnprocessableEntity(new
-            {
-                errors = result.Errors.Select(e => e.ErrorMessage)
-            });
+            return Ok();
         }
     }
 }

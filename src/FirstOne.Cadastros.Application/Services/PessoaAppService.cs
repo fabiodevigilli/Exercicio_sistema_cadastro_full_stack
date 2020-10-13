@@ -2,12 +2,12 @@
 using FirstOne.Cadastros.Application.Interfaces;
 using FirstOne.Cadastros.Application.ViewModels;
 using FirstOne.Cadastros.Domain.Command;
-using FirstOne.Cadastros.Domain.Entities;
 using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Domain.Mediator;
+using FirstOne.Cadastros.Domain.Messaging;
 using FluentValidation.Results;
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FirstOne.Cadastros.Application.Services
 {
@@ -26,23 +26,25 @@ namespace FirstOne.Cadastros.Application.Services
             _mediatorHandler = mediatorHandler;
         }
 
-        public ValidationResult Adicionar(PessoaViewModel pessoaViewModel)
+        public async Task<ValidationResult> Adicionar(PessoaViewModel pessoaViewModel)
         {
             var command = new AdicionarPessoaCommand(pessoaViewModel.Nome);
             if (!command.IsValid())
             {
+                foreach (var error in command.ValidationResult.Errors)
+                {
+                    await _mediatorHandler.PublicarDomainNotification(new DomainNotification(error.ErrorMessage));
+                }
                 return command.ValidationResult;
             }
 
-            var pessoa = new Pessoa(Guid.NewGuid(), command.Nome);
-            _pessoaRepository.Adicionar(pessoa);
-            _mediatorHandler.EnviarCommand(command);
+            await _mediatorHandler.EnviarCommand(command);
             return command.ValidationResult;
         }
 
         public IEnumerable<PessoaViewModel> ObterTodos()
         {
             return _mapper.Map<IEnumerable<PessoaViewModel>>(_pessoaRepository.ObterTodos());
-        }       
+        }
     }
 }

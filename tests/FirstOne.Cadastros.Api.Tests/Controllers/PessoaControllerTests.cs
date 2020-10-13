@@ -1,12 +1,12 @@
 ﻿using FirstOne.Cadastros.Api.Controllers;
 using FirstOne.Cadastros.Application.Interfaces;
 using FirstOne.Cadastros.Application.ViewModels;
-using FirstOne.Cadastros.Domain.Command;
+using FirstOne.Cadastros.Domain.Messaging;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using Moq.AutoMock;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace FirstOne.Cadastros.Api.Tests.Controllers
@@ -19,7 +19,8 @@ namespace FirstOne.Cadastros.Api.Tests.Controllers
         public PessoaControllerTests()
         {
             _autoMocker = new AutoMocker();
-            _pessoaController = _autoMocker.CreateInstance<PessoaController>();
+            _pessoaController = new PessoaController(_autoMocker.GetMock<IPessoaAppService>().Object,
+                                                     _autoMocker.GetMock<DomainNotificationHandler>().Object);
         }
 
         [Fact(DisplayName = "ObterTodos_DeveRetornarPessoas")]
@@ -46,21 +47,24 @@ namespace FirstOne.Cadastros.Api.Tests.Controllers
 
         [Fact(DisplayName = "Adicionar_Pessoas_Deve_Falhar")]
         [Trait("Categoria", "Pessoacontroller")]
-        public void Adicionar_Pessoas_Deve_Falhar()
+        public async Task Adicionar_Pessoas_Deve_Falhar()
         {
             // Arrange
             var pessoa = new PessoaViewModel()
             {
-                Nome = ""                
+                Nome = ""
             };
 
-            var command = new AdicionarPessoaCommand(pessoa.Nome);
-            command.IsValid();
+            var norifications = new List<DomainNotification>()
+            {
+                new DomainNotification("Por favor, informe o Nome da Pessoa")
+            };
 
-            _autoMocker.GetMock<IPessoaAppService>().Setup(e => e.Adicionar(It.IsAny<PessoaViewModel>())).Returns(command.ValidationResult);
+            _autoMocker.GetMock<DomainNotificationHandler>().Setup(e => e.PossuiNotificacao()).Returns(true);
+            _autoMocker.GetMock<DomainNotificationHandler>().Setup(e => e.ObterNotificacoes()).Returns(norifications);
 
             // Act
-            var result = _pessoaController.Adicionar(pessoa);
+            var result = await _pessoaController.Adicionar(pessoa);
 
             // Assert
             var erro = result as UnprocessableEntityObjectResult;

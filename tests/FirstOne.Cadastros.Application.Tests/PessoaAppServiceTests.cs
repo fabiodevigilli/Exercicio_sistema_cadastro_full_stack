@@ -2,14 +2,17 @@
 using FirstOne.Cadastros.Application.AutoMapper;
 using FirstOne.Cadastros.Application.Services;
 using FirstOne.Cadastros.Application.ViewModels;
+using FirstOne.Cadastros.Domain.Command;
 using FirstOne.Cadastros.Domain.Entities;
 using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Domain.Mediator;
+using FirstOne.Cadastros.Domain.Messaging;
 using Moq;
 using Moq.AutoMock;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace FirstOne.Cadastros.Application.Tests
@@ -57,7 +60,7 @@ namespace FirstOne.Cadastros.Application.Tests
 
         [Fact(DisplayName = "Deve_Adicionar_Pessoa")]
         [Trait("Categoria", "PessoaAppService")]
-        public void Deve_Adicionar_Pessoa()
+        public async Task Deve_Adicionar_Pessoa()
         {
             // Arrange
             var pessoaViewModel = new PessoaViewModel()
@@ -66,16 +69,16 @@ namespace FirstOne.Cadastros.Application.Tests
             };
 
             // Act
-            var result = _pessoaAppService.Adicionar(pessoaViewModel);
+            var result = await _pessoaAppService.Adicionar(pessoaViewModel);
 
             // Assert
             Assert.True(result.IsValid);
-            _autoMocker.GetMock<IPessoaRepository>().Verify(e => e.Adicionar(It.IsAny<Pessoa>()), Times.Once);
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(It.IsAny<AdicionarPessoaCommand>()), Times.Once);
         }
 
         [Fact(DisplayName = "Nao_Deve_Adicionar_Pessoa_Validator_Nome")]
         [Trait("Categoria", "PessoaAppService")]
-        public void Nao_Deve_Adicionar_Pessoa_Validator_Nome()
+        public async Task Nao_Deve_Adicionar_Pessoa_Validator_Nome()
         {
             // Arrange
             var pessoaViewModel = new PessoaViewModel()
@@ -84,9 +87,12 @@ namespace FirstOne.Cadastros.Application.Tests
             };
 
             // Act
-            var result = _pessoaAppService.Adicionar(pessoaViewModel);
+            var result = await _pessoaAppService.Adicionar(pessoaViewModel);
 
             // Assert
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => 
+            e.PublicarDomainNotification(It.Is<DomainNotification>(dn => 
+            dn.Value == "Por favor, informe o Nome da Pessoa")), Times.Once);
             Assert.False(result.IsValid);
             Assert.Single(result.Errors);
             Assert.Equal("Por favor, informe o Nome da Pessoa", result.Errors.First().ErrorMessage);
