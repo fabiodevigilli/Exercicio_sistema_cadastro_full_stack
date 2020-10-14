@@ -5,7 +5,6 @@ using FirstOne.Cadastros.Domain.Command;
 using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Domain.Mediator;
 using FirstOne.Cadastros.Domain.Messaging;
-using FluentValidation.Results;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -26,7 +25,7 @@ namespace FirstOne.Cadastros.Application.Services
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<ValidationResult> Adicionar(PessoaViewModel pessoaViewModel)
+        public async Task Adicionar(PessoaViewModel pessoaViewModel)
         {
             var command = new AdicionarPessoaCommand(pessoaViewModel.Nome);
             if (!command.IsValid())
@@ -35,11 +34,15 @@ namespace FirstOne.Cadastros.Application.Services
                 {
                     await _mediatorHandler.PublicarDomainNotification(new DomainNotification(error.ErrorMessage));
                 }
-                return command.ValidationResult;
+                return;
             }
 
             await _mediatorHandler.EnviarCommand(command);
-            return command.ValidationResult;
+        }
+
+        public Task Atualizar(PessoaViewModel pessoaViewModel)
+        {
+            throw new System.NotImplementedException();
         }
 
         public IEnumerable<PessoaViewModel> ObterTodos()

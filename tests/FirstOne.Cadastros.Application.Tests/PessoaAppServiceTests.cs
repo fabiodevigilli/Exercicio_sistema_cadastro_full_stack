@@ -69,10 +69,10 @@ namespace FirstOne.Cadastros.Application.Tests
             };
 
             // Act
-            var result = await _pessoaAppService.Adicionar(pessoaViewModel);
+            await _pessoaAppService.Adicionar(pessoaViewModel);
 
             // Assert
-            Assert.True(result.IsValid);
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.PublicarDomainNotification(It.IsAny<DomainNotification>()), Times.Never);
             _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(It.IsAny<AdicionarPessoaCommand>()), Times.Once);
         }
 
@@ -87,15 +87,15 @@ namespace FirstOne.Cadastros.Application.Tests
             };
 
             // Act
-            var result = await _pessoaAppService.Adicionar(pessoaViewModel);
+           await _pessoaAppService.Adicionar(pessoaViewModel);
 
             // Assert
-            _autoMocker.GetMock<IMediatorHandler>().Verify(e => 
-            e.PublicarDomainNotification(It.Is<DomainNotification>(dn => 
-            dn.Value == "Por favor, informe o Nome da Pessoa")), Times.Once);
-            Assert.False(result.IsValid);
-            Assert.Single(result.Errors);
-            Assert.Equal("Por favor, informe o Nome da Pessoa", result.Errors.First().ErrorMessage);
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.PublicarDomainNotification(
+                It.Is<DomainNotification>(dn => dn.Value == "Por favor, informe o Nome da Pessoa")), Times.Once);
+
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(
+                It.IsAny<AdicionarPessoaCommand>()), Times.Never);
+
         }
     }
 }

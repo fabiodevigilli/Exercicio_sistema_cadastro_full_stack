@@ -42,5 +42,20 @@ namespace FirstOne.Cadastros.Api.Controllers
             }
             return Ok();
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Atualizar([FromBody] PessoaViewModel pessoaViewmodel)
+        {
+            await _pessoaAppService.Atualizar(pessoaViewmodel);
+
+            if (_domainNotificationHandler.PossuiNotificacao())
+            {
+                return UnprocessableEntity(new
+                {
+                    errors = _domainNotificationHandler.ObterNotificacoes().Select(e => e.Value)
+                });
+            }
+            return Ok();
+        }
     }
 }

@@ -3,6 +3,7 @@ using FirstOne.Cadastros.Application.Interfaces;
 using FirstOne.Cadastros.Application.ViewModels;
 using FirstOne.Cadastros.Domain.Messaging;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using Moq.AutoMock;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,27 @@ namespace FirstOne.Cadastros.Api.Tests.Controllers
             Assert.Single(result);
         }
 
+        [Fact(DisplayName = "Adicionar_Pessoas_Deve_Passar")]
+        [Trait("Categoria", "Pessoacontroller")]
+        public async Task Adicionar_Pessoas_Deve_Passar()
+        {
+            // Arrange
+            var pessoa = new PessoaViewModel()
+            {
+                Nome = "Pessoa 1"
+            };
+
+            _autoMocker.GetMock<DomainNotificationHandler>().Setup(e => e.PossuiNotificacao()).Returns(false);
+
+            // Act
+            var result = await _pessoaController.Adicionar(pessoa);
+
+            // Assert
+            var ok = result as OkResult;
+            Assert.NotNull(ok);
+            Assert.Equal(200, ok.StatusCode);
+        }
+
         [Fact(DisplayName = "Adicionar_Pessoas_Deve_Falhar")]
         [Trait("Categoria", "Pessoacontroller")]
         public async Task Adicionar_Pessoas_Deve_Falhar()
@@ -70,6 +92,30 @@ namespace FirstOne.Cadastros.Api.Tests.Controllers
             var erro = result as UnprocessableEntityObjectResult;
             Assert.NotNull(erro);
             Assert.Equal(422, erro.StatusCode);
+        }
+
+        [Fact(DisplayName = "Atualizar_Pessoa_Deve_Passar")]
+        [Trait("Categoria", "Pessoacontroller")]
+        public async Task Atualizar_Pessoa_Deve_Passar()
+        {
+            // Arrange
+            var pessoa = new PessoaViewModel()
+            {
+                Id = Guid.NewGuid(),
+                Nome = "Pessoa 1 Alterada"
+            };
+
+            _autoMocker.GetMock<DomainNotificationHandler>().Setup(e => e.PossuiNotificacao()).Returns(false);
+
+            // Act
+            var result = await _pessoaController.Atualizar(pessoa);
+
+            // Assert
+            _autoMocker.GetMock<IPessoaAppService>().Verify(e => e.Atualizar(It.IsAny<PessoaViewModel>()), Times.Once);
+            _autoMocker.GetMock<DomainNotificationHandler>().Verify(e => e.PossuiNotificacao(), Times.Once);
+            var ok = result as OkResult;
+            Assert.NotNull(ok);
+            Assert.Equal(200, ok.StatusCode);
         }
     }
 }
