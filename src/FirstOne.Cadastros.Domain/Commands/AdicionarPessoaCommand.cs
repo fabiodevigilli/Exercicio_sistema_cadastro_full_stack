@@ -1,20 +1,18 @@
 ﻿using FirstOne.Cadastros.Domain.Validations;
 using FluentValidation.Results;
-using MediatR;
 
-namespace FirstOne.Cadastros.Domain.Command
+namespace FirstOne.Cadastros.Domain.Commands
 {
-    public class AdicionarPessoaCommand : IRequest<bool>
+    public class AdicionarPessoaCommand : Command
     {
         public string Nome { get; }
-        public ValidationResult ValidationResult { get; private set; }
 
         public AdicionarPessoaCommand(string nome)
         {
             Nome = nome;
         }
 
-        public bool IsValid()
+        public override bool IsValid()
         {
             ValidationResult = new AdicionarPessoaCommandValidation().Validate(this);
             return ValidationResult.IsValid;

@@ -1,4 +1,4 @@
-﻿using FirstOne.Cadastros.Domain.Command;
+﻿using FirstOne.Cadastros.Domain.Commands;
 using FirstOne.Cadastros.Domain.Messaging;
 using MediatR;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ namespace FirstOne.Cadastros.Domain.Mediator
         {
             _mediator = mediator;
         }
-        public async Task EnviarCommand<T>(T command) where T : AdicionarPessoaCommand
+        public async Task EnviarCommand<T>(T command) where T : Command
         {
             await _mediator.Send(command);
         }

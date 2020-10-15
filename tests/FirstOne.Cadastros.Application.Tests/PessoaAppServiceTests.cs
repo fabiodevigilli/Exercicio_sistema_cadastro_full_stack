@@ -2,7 +2,7 @@
 using FirstOne.Cadastros.Application.AutoMapper;
 using FirstOne.Cadastros.Application.Services;
 using FirstOne.Cadastros.Application.ViewModels;
-using FirstOne.Cadastros.Domain.Command;
+using FirstOne.Cadastros.Domain.Commands;
 using FirstOne.Cadastros.Domain.Entities;
 using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Domain.Mediator;
@@ -96,6 +96,67 @@ namespace FirstOne.Cadastros.Application.Tests
             _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(
                 It.IsAny<AdicionarPessoaCommand>()), Times.Never);
 
+        }
+
+        [Fact(DisplayName = "Deve_Atualizar_Pessoa")]
+        [Trait("Categoria", "PessoaAppService")]
+        public async Task Deve_Atualizar_Pessoa()
+        {
+            // Arrange
+            var pessoaViewModel = new PessoaViewModel()
+            {
+                Id = Guid.NewGuid(),
+                Nome = "Pessoa 1 Alterado"
+            };
+
+            // Act
+            await _pessoaAppService.Atualizar(pessoaViewModel);
+
+            // Assert
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.PublicarDomainNotification(It.IsAny<DomainNotification>()), Times.Never);
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(It.IsAny<AtualizarPessoaCommand>()), Times.Once);
+        }
+
+        [Fact(DisplayName = "Nao_Deve_Atualizar_Pessoa_Validator_Nome")]
+        [Trait("Categoria", "PessoaAppService")]
+        public async Task Nao_Deve_Atualizar_Pessoa_Validator_Nome()
+        {
+            // Arrange
+            var pessoaViewModel = new PessoaViewModel()
+            {
+                Id = Guid.NewGuid(),
+                Nome = ""
+            };
+
+            // Act
+            await _pessoaAppService.Atualizar(pessoaViewModel);
+
+            // Assert
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.PublicarDomainNotification(
+                It.Is<DomainNotification>(dn => dn.Value == "Por favor, informe o Nome da Pessoa")), Times.Once);
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(
+                It.IsAny<AdicionarPessoaCommand>()), Times.Never);
+        }
+
+        [Fact(DisplayName = "Nao_Deve_Atualizar_Pessoa_Validator_Id")]
+        [Trait("Categoria", "PessoaAppService")]
+        public async Task Nao_Deve_Atualizar_Pessoa_Validator_Id()
+        {
+            // Arrange
+            var pessoaViewModel = new PessoaViewModel()
+            {
+                Id = Guid.Empty,
+                Nome = "Pessoa 1 Alterado"
+            };
+
+            // Act
+            await _pessoaAppService.Atualizar(pessoaViewModel);
+
+            // Assert
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.PublicarDomainNotification(
+                It.Is<DomainNotification>(dn => dn.Value == "Por favor, informe o Id da Pessoa")), Times.Once);
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(
+                It.IsAny<AdicionarPessoaCommand>()), Times.Never);
         }
     }
 }

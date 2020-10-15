@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FirstOne.Cadastros.Application.Interfaces;
 using FirstOne.Cadastros.Application.ViewModels;
-using FirstOne.Cadastros.Domain.Command;
+using FirstOne.Cadastros.Domain.Commands;
 using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Domain.Mediator;
 using FirstOne.Cadastros.Domain.Messaging;
@@ -40,9 +40,19 @@ namespace FirstOne.Cadastros.Application.Services
             await _mediatorHandler.EnviarCommand(command);
         }
 
-        public Task Atualizar(PessoaViewModel pessoaViewModel)
+        public async Task Atualizar(PessoaViewModel pessoaViewModel)
         {
-            throw new System.NotImplementedException();
+            var command = new AtualizarPessoaCommand(pessoaViewModel.Id, pessoaViewModel.Nome);
+            if (!command.IsValid())
+            {
+                foreach (var error in command.ValidationResult.Errors)
+                {
+                    await _mediatorHandler.PublicarDomainNotification(new DomainNotification(error.ErrorMessage));
+                }
+                return;
+            }
+
+            await _mediatorHandler.EnviarCommand(command);
         }
 
         public IEnumerable<PessoaViewModel> ObterTodos()

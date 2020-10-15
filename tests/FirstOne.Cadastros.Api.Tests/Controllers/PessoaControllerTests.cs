@@ -77,13 +77,13 @@ namespace FirstOne.Cadastros.Api.Tests.Controllers
                 Nome = ""
             };
 
-            var norifications = new List<DomainNotification>()
+            var notifications = new List<DomainNotification>()
             {
                 new DomainNotification("Por favor, informe o Nome da Pessoa")
             };
 
             _autoMocker.GetMock<DomainNotificationHandler>().Setup(e => e.PossuiNotificacao()).Returns(true);
-            _autoMocker.GetMock<DomainNotificationHandler>().Setup(e => e.ObterNotificacoes()).Returns(norifications);
+            _autoMocker.GetMock<DomainNotificationHandler>().Setup(e => e.ObterNotificacoes()).Returns(notifications);
 
             // Act
             var result = await _pessoaController.Adicionar(pessoa);
@@ -116,6 +116,37 @@ namespace FirstOne.Cadastros.Api.Tests.Controllers
             var ok = result as OkResult;
             Assert.NotNull(ok);
             Assert.Equal(200, ok.StatusCode);
+        }
+
+        [Fact(DisplayName = "Atualizar_Pessoa_Deve_Falhar")]
+        [Trait("Categoria", "Pessoacontroller")]
+        public async Task Atualizar_Pessoa_Deve_Falhar()
+        {
+            // Arrange
+            var pessoa = new PessoaViewModel()
+            {
+                Id = Guid.NewGuid(),
+                Nome = ""
+            };
+
+            var notifications = new List<DomainNotification>()
+            {
+                new DomainNotification("Por favor, informe o Nome da Pessoa")
+            };
+
+            _autoMocker.GetMock<DomainNotificationHandler>().Setup(e => e.PossuiNotificacao()).Returns(true);
+            _autoMocker.GetMock<DomainNotificationHandler>().Setup(e => e.ObterNotificacoes()).Returns(notifications);
+
+            // Act
+            var result = await _pessoaController.Atualizar(pessoa);
+
+            // Assert
+            _autoMocker.GetMock<IPessoaAppService>().Verify(e => e.Atualizar(It.IsAny<PessoaViewModel>()), Times.Once);
+            _autoMocker.GetMock<DomainNotificationHandler>().Verify(e => e.PossuiNotificacao(), Times.Once);
+            _autoMocker.GetMock<DomainNotificationHandler>().Verify(e => e.ObterNotificacoes(), Times.Once);
+            var erro = result as UnprocessableEntityObjectResult;
+            Assert.NotNull(erro);
+            Assert.Equal(422, erro.StatusCode);
         }
     }
 }

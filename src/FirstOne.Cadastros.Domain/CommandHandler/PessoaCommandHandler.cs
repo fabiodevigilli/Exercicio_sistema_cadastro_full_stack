@@ -1,4 +1,4 @@
-﻿using FirstOne.Cadastros.Domain.Command;
+﻿using FirstOne.Cadastros.Domain.Commands;
 using FirstOne.Cadastros.Domain.Entities;
 using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Domain.Mediator;
