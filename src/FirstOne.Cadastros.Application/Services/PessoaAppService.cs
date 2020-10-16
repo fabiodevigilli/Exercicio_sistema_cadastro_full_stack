@@ -31,10 +31,7 @@ namespace FirstOne.Cadastros.Application.Services
             var command = new AdicionarPessoaCommand(pessoaViewModel.Nome);
             if (!command.IsValid())
             {
-                foreach (var error in command.ValidationResult.Errors)
-                {
-                    await _mediatorHandler.PublicarDomainNotification(new DomainNotification(error.ErrorMessage));
-                }
+                await PublicarErrosDeValidacao(command);
                 return;
             }
 
@@ -46,10 +43,7 @@ namespace FirstOne.Cadastros.Application.Services
             var command = new AtualizarPessoaCommand(pessoaViewModel.Id, pessoaViewModel.Nome);
             if (!command.IsValid())
             {
-                foreach (var error in command.ValidationResult.Errors)
-                {
-                    await _mediatorHandler.PublicarDomainNotification(new DomainNotification(error.ErrorMessage));
-                }
+                await PublicarErrosDeValidacao(command);
                 return;
             }
 
@@ -61,10 +55,7 @@ namespace FirstOne.Cadastros.Application.Services
             var command = new RemoverPessoaCommand(id);
             if (!command.IsValid())
             {
-                foreach (var error in command.ValidationResult.Errors)
-                {
-                    await _mediatorHandler.PublicarDomainNotification(new DomainNotification(error.ErrorMessage));
-                }
+                await PublicarErrosDeValidacao(command);
                 return;
             }
 
@@ -74,6 +65,19 @@ namespace FirstOne.Cadastros.Application.Services
         public IEnumerable<PessoaViewModel> ObterTodos()
         {
             return _mapper.Map<IEnumerable<PessoaViewModel>>(_pessoaRepository.ObterTodos());
+        }
+
+        public PessoaViewModel ObterPorId(Guid id)
+        {
+            return _mapper.Map<PessoaViewModel>(_pessoaRepository.ObterPorId(id));
+        }
+
+        private async Task PublicarErrosDeValidacao(Command command)
+        {
+            foreach (var error in command.ValidationResult.Errors)
+            {
+                await _mediatorHandler.PublicarDomainNotification(new DomainNotification(error.ErrorMessage));
+            }           
         }
     }
 }

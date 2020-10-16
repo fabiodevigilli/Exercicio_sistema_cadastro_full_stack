@@ -29,6 +29,12 @@ namespace FirstOne.Cadastros.Api.Controllers
             return _pessoaAppService.ObterTodos();
         }
 
+        [HttpGet("{id}")]
+        public PessoaViewModel ObterPorId(Guid id)
+        {
+            return _pessoaAppService.ObterPorId(id);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Adicionar([FromBody] PessoaViewModel pessoaViewmodel)
         {

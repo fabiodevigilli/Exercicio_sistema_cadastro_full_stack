@@ -26,14 +26,19 @@ namespace FirstOne.Cadastros.Infra.Data.Repository
             _mongoDbContext.Pessoas.ReplaceOne(e => e.Id == pessoa.Id, pessoa);
         }
 
+        public void Remover(Guid id)
+        {
+            _mongoDbContext.Pessoas.DeleteOne(e => e.Id == id);
+        }
+
         public IEnumerable<Pessoa> ObterTodos()
         {
             return _mongoDbContext.Pessoas.Find(m => true).ToList();
         }
 
-        public void Remover(Guid id)
+        public Pessoa ObterPorId(Guid id)
         {
-            _mongoDbContext.Pessoas.DeleteOne(e => e.Id == id);
+            return _mongoDbContext.Pessoas.Find(e => e.Id == id).FirstOrDefault();
         }
     }
 }
