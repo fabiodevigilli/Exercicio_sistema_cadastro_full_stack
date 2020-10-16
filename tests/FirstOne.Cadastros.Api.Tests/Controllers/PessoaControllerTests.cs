@@ -148,5 +148,48 @@ namespace FirstOne.Cadastros.Api.Tests.Controllers
             Assert.NotNull(erro);
             Assert.Equal(422, erro.StatusCode);
         }
+
+        [Fact(DisplayName = "Remover_Pessoa_Deve_Passar")]
+        [Trait("Categoria", "Pessoacontroller")]
+        public async Task Remover_Pessoa_Deve_Passar()
+        {
+            // Arrange
+            _autoMocker.GetMock<DomainNotificationHandler>().Setup(e => e.PossuiNotificacao()).Returns(false);
+
+            // Act
+            var result = await _pessoaController.Remover(Guid.NewGuid());
+
+            // Assert
+            _autoMocker.GetMock<IPessoaAppService>().Verify(e => e.Remover(It.IsAny<Guid>()), Times.Once);
+            _autoMocker.GetMock<DomainNotificationHandler>().Verify(e => e.PossuiNotificacao(), Times.Once);
+            var ok = result as OkResult;
+            Assert.NotNull(ok);
+            Assert.Equal(200, ok.StatusCode);
+        }
+
+        [Fact(DisplayName = "Remover_Pessoa_Deve_Falhar")]
+        [Trait("Categoria", "Pessoacontroller")]
+        public async Task Remover_Pessoa_Deve_Falhar()
+        {
+            // Arrange
+            var notifications = new List<DomainNotification>()
+            {
+                new DomainNotification("Por favor, informe o Id da Pessoa")
+            };
+
+            _autoMocker.GetMock<DomainNotificationHandler>().Setup(e => e.PossuiNotificacao()).Returns(true);
+            _autoMocker.GetMock<DomainNotificationHandler>().Setup(e => e.ObterNotificacoes()).Returns(notifications);
+
+            // Act
+            var result = await _pessoaController.Remover(Guid.Empty);
+
+            // Assert
+            _autoMocker.GetMock<IPessoaAppService>().Verify(e => e.Remover(It.IsAny<Guid>()), Times.Once);
+            _autoMocker.GetMock<DomainNotificationHandler>().Verify(e => e.PossuiNotificacao(), Times.Once);
+            _autoMocker.GetMock<DomainNotificationHandler>().Verify(e => e.ObterNotificacoes(), Times.Once);
+            var erro = result as UnprocessableEntityObjectResult;
+            Assert.NotNull(erro);
+            Assert.Equal(422, erro.StatusCode);
+        }
     }
 }

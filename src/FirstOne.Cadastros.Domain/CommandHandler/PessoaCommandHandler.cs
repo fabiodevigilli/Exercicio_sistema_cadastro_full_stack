@@ -11,7 +11,9 @@ using System.Threading.Tasks;
 namespace FirstOne.Cadastros.Domain.CommandHandler
 {
     public class PessoaCommandHandler :
-        IRequestHandler<AdicionarPessoaCommand, bool>
+        IRequestHandler<AdicionarPessoaCommand, bool>,
+        IRequestHandler<AtualizarPessoaCommand, bool>,
+        IRequestHandler<RemoverPessoaCommand, bool>
     {
         private readonly IPessoaRepository _pessoaRepository;
         private readonly IMediatorHandler _mediatorHandler;
@@ -36,6 +38,39 @@ namespace FirstOne.Cadastros.Domain.CommandHandler
                        
             var pessoa = new Pessoa(Guid.NewGuid(), request.Nome);
             _pessoaRepository.Adicionar(pessoa);
+
+            return true;
+        }
+
+        public async Task<bool> Handle(AtualizarPessoaCommand request, CancellationToken cancellationToken)
+        {
+            if (!request.IsValid())
+            {
+                foreach (var error in request.ValidationResult.Errors)
+                {
+                    await _mediatorHandler.PublicarDomainNotification(new DomainNotification(error.ErrorMessage));
+                }
+                return false;
+            }
+
+            var pessoa = new Pessoa(request.Id, request.Nome);
+            _pessoaRepository.Atualizar(pessoa);
+
+            return true;
+        }
+
+        public async Task<bool> Handle(RemoverPessoaCommand request, CancellationToken cancellationToken)
+        {
+            if (!request.IsValid())
+            {
+                foreach (var error in request.ValidationResult.Errors)
+                {
+                    await _mediatorHandler.PublicarDomainNotification(new DomainNotification(error.ErrorMessage));
+                }
+                return false;
+            }
+            
+            _pessoaRepository.Remover(request.Id);
 
             return true;
         }

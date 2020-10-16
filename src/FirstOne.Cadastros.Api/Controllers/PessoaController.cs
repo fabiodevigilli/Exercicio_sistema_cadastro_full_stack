@@ -3,6 +3,7 @@ using FirstOne.Cadastros.Application.ViewModels;
 using FirstOne.Cadastros.Domain.Messaging;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,6 +48,21 @@ namespace FirstOne.Cadastros.Api.Controllers
         public async Task<IActionResult> Atualizar([FromBody] PessoaViewModel pessoaViewmodel)
         {
             await _pessoaAppService.Atualizar(pessoaViewmodel);
+
+            if (_domainNotificationHandler.PossuiNotificacao())
+            {
+                return UnprocessableEntity(new
+                {
+                    errors = _domainNotificationHandler.ObterNotificacoes().Select(e => e.Value)
+                });
+            }
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Remover(Guid id)
+        {
+            await _pessoaAppService.Remover(id);
 
             if (_domainNotificationHandler.PossuiNotificacao())
             {

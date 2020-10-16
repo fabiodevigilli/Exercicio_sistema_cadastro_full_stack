@@ -2,7 +2,7 @@
 using FirstOne.Cadastros.Application.AutoMapper;
 using FirstOne.Cadastros.Application.Interfaces;
 using FirstOne.Cadastros.Application.Services;
-using FirstOne.Cadastros.Domain.Command;
+using FirstOne.Cadastros.Domain.Commands;
 using FirstOne.Cadastros.Domain.CommandHandler;
 using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Domain.Mediator;
@@ -38,6 +38,8 @@ namespace FirstOne.Cadastros.Api.Config
 
             // Domain - Commands
             services.AddScoped<IRequestHandler<AdicionarPessoaCommand, bool>, PessoaCommandHandler>();
+            services.AddScoped<IRequestHandler<AtualizarPessoaCommand, bool>, PessoaCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoverPessoaCommand, bool>, PessoaCommandHandler>();
 
             // Infra - Data
             services.AddScoped<IPessoaRepository, PessoaRepository>();

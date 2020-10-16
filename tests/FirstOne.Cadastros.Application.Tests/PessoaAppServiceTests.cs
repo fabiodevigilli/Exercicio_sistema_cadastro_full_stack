@@ -158,5 +158,35 @@ namespace FirstOne.Cadastros.Application.Tests
             _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(
                 It.IsAny<AdicionarPessoaCommand>()), Times.Never);
         }
+
+        [Fact(DisplayName = "Deve_Remover_Pessoa")]
+        [Trait("Categoria", "PessoaAppService")]
+        public async Task Deve_Remover_Pessoa()
+        {
+            // Arrange
+            
+            // Act
+            await _pessoaAppService.Remover(Guid.NewGuid());
+
+            // Assert
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.PublicarDomainNotification(It.IsAny<DomainNotification>()), Times.Never);
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(It.IsAny<RemoverPessoaCommand>()), Times.Once);
+        }
+
+        [Fact(DisplayName = "Nao_Deve_Remover_Pessoa_Validator_Id")]
+        [Trait("Categoria", "PessoaAppService")]
+        public async Task Nao_Deve_Remover_Pessoa_Validator_Id()
+        {
+            // Arrange
+            
+            // Act
+            await _pessoaAppService.Remover(Guid.Empty);
+
+            // Assert
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.PublicarDomainNotification(
+                It.Is<DomainNotification>(dn => dn.Value == "Por favor, informe o Id da Pessoa")), Times.Once);
+            _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(
+                It.IsAny<RemoverPessoaCommand>()), Times.Never);
+        }
     }
 }
