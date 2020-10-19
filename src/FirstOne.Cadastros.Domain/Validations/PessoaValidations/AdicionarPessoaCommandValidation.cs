@@ -7,7 +7,7 @@ namespace FirstOne.Cadastros.Domain.Validations
     {
         public AdicionarPessoaCommandValidation()
         {
-            RuleFor(p => p.Nome).NotEmpty().WithMessage("Por favor, informe o Nome da Pessoa");
+            RuleFor(p => p.Nome).NotEmpty().WithMessage(string.Format(ValidationMessages.RequiredField, "Nome"));
         }
     }
 }

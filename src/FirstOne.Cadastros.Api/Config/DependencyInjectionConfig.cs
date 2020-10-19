@@ -37,9 +37,9 @@ namespace FirstOne.Cadastros.Api.Config
             services.AddScoped<IPessoaAppService, PessoaAppService>();
 
             // Domain - Commands
-            services.AddScoped<IRequestHandler<AdicionarPessoaCommand, bool>, PessoaCommandHandler>();
-            services.AddScoped<IRequestHandler<AtualizarPessoaCommand, bool>, PessoaCommandHandler>();
-            services.AddScoped<IRequestHandler<RemoverPessoaCommand, bool>, PessoaCommandHandler>();
+            services.AddScoped<IRequestHandler<AdicionarPessoaCommand, Unit>, PessoaCommandHandler>();
+            services.AddScoped<IRequestHandler<AtualizarPessoaCommand, Unit>, PessoaCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoverPessoaCommand, Unit>, PessoaCommandHandler>();
 
             // Infra - Data
             services.AddScoped<IPessoaRepository, PessoaRepository>();

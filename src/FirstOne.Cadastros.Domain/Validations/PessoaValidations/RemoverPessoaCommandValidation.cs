@@ -7,7 +7,7 @@ namespace FirstOne.Cadastros.Domain.Validations
     {
         public RemoverPessoaCommandValidation()
         {
-            RuleFor(p => p.Id).NotEmpty().WithMessage("Por favor, informe o Id da Pessoa");
+            RuleFor(p => p.Id).NotEmpty().WithMessage(string.Format(ValidationMessages.RequiredField, "Id"));
         }
     }
 }

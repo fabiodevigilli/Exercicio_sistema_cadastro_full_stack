@@ -40,14 +40,7 @@ namespace FirstOne.Cadastros.Api.Controllers
         {
             await _pessoaAppService.Adicionar(pessoaViewmodel);
 
-            if (_domainNotificationHandler.PossuiNotificacao())
-            {
-                return UnprocessableEntity(new
-                {
-                    errors = _domainNotificationHandler.ObterNotificacoes().Select(e => e.Value)
-                });                
-            }
-            return Ok();
+            return CustomResponse();
         }
 
         [HttpPut]
@@ -55,14 +48,7 @@ namespace FirstOne.Cadastros.Api.Controllers
         {
             await _pessoaAppService.Atualizar(pessoaViewmodel);
 
-            if (_domainNotificationHandler.PossuiNotificacao())
-            {
-                return UnprocessableEntity(new
-                {
-                    errors = _domainNotificationHandler.ObterNotificacoes().Select(e => e.Value)
-                });
-            }
-            return Ok();
+            return CustomResponse();
         }
 
         [HttpDelete("{id}")]
@@ -70,6 +56,11 @@ namespace FirstOne.Cadastros.Api.Controllers
         {
             await _pessoaAppService.Remover(id);
 
+            return CustomResponse();
+        }
+
+        private IActionResult CustomResponse()
+        {
             if (_domainNotificationHandler.PossuiNotificacao())
             {
                 return UnprocessableEntity(new

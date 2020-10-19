@@ -7,6 +7,7 @@ using FirstOne.Cadastros.Domain.Entities;
 using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Domain.Mediator;
 using FirstOne.Cadastros.Domain.Messaging;
+using FirstOne.Cadastros.Domain.Validations;
 using Moq;
 using Moq.AutoMock;
 using System;
@@ -91,7 +92,7 @@ namespace FirstOne.Cadastros.Application.Tests
 
             // Assert
             _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.PublicarDomainNotification(
-                It.Is<DomainNotification>(dn => dn.Value == "Por favor, informe o Nome da Pessoa")), Times.Once);
+                It.Is<DomainNotification>(dn => dn.Value == string.Format(ValidationMessages.RequiredField, "Nome"))), Times.Once);
 
             _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(
                 It.IsAny<AdicionarPessoaCommand>()), Times.Never);
@@ -133,7 +134,7 @@ namespace FirstOne.Cadastros.Application.Tests
 
             // Assert
             _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.PublicarDomainNotification(
-                It.Is<DomainNotification>(dn => dn.Value == "Por favor, informe o Nome da Pessoa")), Times.Once);
+                It.Is<DomainNotification>(dn => dn.Value == string.Format(ValidationMessages.RequiredField, "Nome"))), Times.Once);
             _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(
                 It.IsAny<AdicionarPessoaCommand>()), Times.Never);
         }
@@ -154,7 +155,7 @@ namespace FirstOne.Cadastros.Application.Tests
 
             // Assert
             _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.PublicarDomainNotification(
-                It.Is<DomainNotification>(dn => dn.Value == "Por favor, informe o Id da Pessoa")), Times.Once);
+                It.Is<DomainNotification>(dn => dn.Value == string.Format(ValidationMessages.RequiredField, "Id"))), Times.Once);
             _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(
                 It.IsAny<AdicionarPessoaCommand>()), Times.Never);
         }
@@ -184,7 +185,7 @@ namespace FirstOne.Cadastros.Application.Tests
 
             // Assert
             _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.PublicarDomainNotification(
-                It.Is<DomainNotification>(dn => dn.Value == "Por favor, informe o Id da Pessoa")), Times.Once);
+                It.Is<DomainNotification>(dn => dn.Value == string.Format(ValidationMessages.RequiredField, "Id"))), Times.Once);
             _autoMocker.GetMock<IMediatorHandler>().Verify(e => e.EnviarCommand(
                 It.IsAny<RemoverPessoaCommand>()), Times.Never);
         }
