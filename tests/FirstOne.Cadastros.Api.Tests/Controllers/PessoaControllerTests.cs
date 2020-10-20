@@ -53,7 +53,7 @@ namespace FirstOne.Cadastros.Api.Tests.Controllers
             // Arrange
             var pessoa = new PessoaViewModel()
             {
-                Nome = "Pessoa 1"
+                Nome = "Fulano 1"
             };
 
             _autoMocker.GetMock<DomainNotificationHandler>().Setup(e => e.PossuiNotificacao()).Returns(false);

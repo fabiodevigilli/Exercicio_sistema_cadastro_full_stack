@@ -12,15 +12,13 @@ namespace FirstOne.Cadastros.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PessoaController : ControllerBase
+    public class PessoaController : BaseController
     {
         private readonly IPessoaAppService _pessoaAppService;
-        private readonly DomainNotificationHandler _domainNotificationHandler;
 
-        public PessoaController(IPessoaAppService pessoaAppService, INotificationHandler<DomainNotification> notificationHandler)
+        public PessoaController(IPessoaAppService pessoaAppService, INotificationHandler<DomainNotification> notificationHandler) : base(notificationHandler)
         {
             _pessoaAppService = pessoaAppService;
-            _domainNotificationHandler = (DomainNotificationHandler)notificationHandler;
         }
 
         [HttpGet]
@@ -57,18 +55,6 @@ namespace FirstOne.Cadastros.Api.Controllers
             await _pessoaAppService.Remover(id);
 
             return CustomResponse();
-        }
-
-        private IActionResult CustomResponse()
-        {
-            if (_domainNotificationHandler.PossuiNotificacao())
-            {
-                return UnprocessableEntity(new
-                {
-                    errors = _domainNotificationHandler.ObterNotificacoes().Select(e => e.Value)
-                });
-            }
-            return Ok();
         }
     }
 }

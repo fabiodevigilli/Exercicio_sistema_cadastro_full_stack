@@ -36,5 +36,13 @@ namespace FirstOne.Cadastros.Infra.Data.Context
                 return Database.GetCollection<Pessoa>("Pessoas");
             }
         }
+
+        public IMongoCollection<Usuario> Usuarios
+        {
+            get
+            {
+                return Database.GetCollection<Usuario>("Usuarios");
+            }
+        }
     }
 }

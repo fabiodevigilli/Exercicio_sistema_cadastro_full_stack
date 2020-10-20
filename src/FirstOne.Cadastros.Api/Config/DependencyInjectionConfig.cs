@@ -13,6 +13,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using FirstOne.Cadastros.Domain.Commands.UsuarioCommands;
 
 namespace FirstOne.Cadastros.Api.Config
 {
@@ -35,14 +36,18 @@ namespace FirstOne.Cadastros.Api.Config
 
             // Application
             services.AddScoped<IPessoaAppService, PessoaAppService>();
+            services.AddScoped<IUsuarioAppService, UsuarioAppService>();
 
             // Domain - Commands
             services.AddScoped<IRequestHandler<AdicionarPessoaCommand, Unit>, PessoaCommandHandler>();
             services.AddScoped<IRequestHandler<AtualizarPessoaCommand, Unit>, PessoaCommandHandler>();
             services.AddScoped<IRequestHandler<RemoverPessoaCommand, Unit>, PessoaCommandHandler>();
 
+            services.AddScoped<IRequestHandler<AdicionarUsuarioCommand, Unit>, UsuarioCommandHandler>();
+
             // Infra - Data
             services.AddScoped<IPessoaRepository, PessoaRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         }
     }
 }

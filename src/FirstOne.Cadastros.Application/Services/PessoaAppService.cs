@@ -4,26 +4,23 @@ using FirstOne.Cadastros.Application.ViewModels;
 using FirstOne.Cadastros.Domain.Commands;
 using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Domain.Mediator;
-using FirstOne.Cadastros.Domain.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FirstOne.Cadastros.Application.Services
 {
-    public class PessoaAppService : IPessoaAppService
+    public class PessoaAppService : AppService, IPessoaAppService
     {
         private readonly IMapper _mapper;
         private readonly IPessoaRepository _pessoaRepository;
-        private readonly IMediatorHandler _mediatorHandler;
 
         public PessoaAppService(IMapper mapper,
                                 IPessoaRepository pessoaRepository,
-                                IMediatorHandler mediatorHandler)
+                                IMediatorHandler mediatorHandler) : base(mediatorHandler)
         {
             _mapper = mapper;
             _pessoaRepository = pessoaRepository;
-            _mediatorHandler = mediatorHandler;
         }
 
         public async Task Adicionar(PessoaViewModel pessoaViewModel)
@@ -70,14 +67,6 @@ namespace FirstOne.Cadastros.Application.Services
         public PessoaViewModel ObterPorId(Guid id)
         {
             return _mapper.Map<PessoaViewModel>(_pessoaRepository.ObterPorId(id));
-        }
-
-        private async Task PublicarErrosDeValidacao(Command command)
-        {
-            foreach (var error in command.ValidationResult.Errors)
-            {
-                await _mediatorHandler.PublicarDomainNotification(new DomainNotification(error.ErrorMessage));
-            }           
         }
     }
 }
