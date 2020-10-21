@@ -3,7 +3,7 @@ using FirstOne.Cadastros.Application.ViewModels;
 using FirstOne.Cadastros.Domain.Messaging;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FirstOne.Cadastros.Api.Controllers
@@ -25,6 +25,12 @@ namespace FirstOne.Cadastros.Api.Controllers
             await _usuarioAppService.Adicionar(usuarioViewmodel);
 
             return CustomResponse();
+        }
+
+        [HttpGet]
+        public IEnumerable<UsuarioViewModel> ObterTodos()
+        {
+            return _usuarioAppService.ObterTodos();
         }
     }
 }

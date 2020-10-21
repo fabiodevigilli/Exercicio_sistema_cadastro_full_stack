@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using FirstOne.Cadastros.Domain.Commands.UsuarioCommands;
+using Microsoft.EntityFrameworkCore;
 
 namespace FirstOne.Cadastros.Api.Config
 {
@@ -30,9 +31,9 @@ namespace FirstOne.Cadastros.Api.Config
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
             // MongoDb
-            MongoDbContext.ConnectionString = configuration.GetSection("MongoConnection:ConnectionString").Value;
-            MongoDbContext.DatabaseName = configuration.GetSection("MongoConnection:Database").Value;
-            MongoDbContext.IsSSL = Convert.ToBoolean(configuration.GetSection("MongoConnection:IsSSL").Value);
+            //MongoDbContext.ConnectionString = configuration.GetSection("MongoConnection:ConnectionString").Value;
+            //MongoDbContext.DatabaseName = configuration.GetSection("MongoConnection:Database").Value;
+            //MongoDbContext.IsSSL = Convert.ToBoolean(configuration.GetSection("MongoConnection:IsSSL").Value);
 
             // Application
             services.AddScoped<IPessoaAppService, PessoaAppService>();
@@ -48,6 +49,9 @@ namespace FirstOne.Cadastros.Api.Config
             // Infra - Data
             services.AddScoped<IPessoaRepository, PessoaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<SQLServerContext>();
+
+            services.AddDbContext<SQLServerContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         }
     }
 }

@@ -1,24 +1,33 @@
 ﻿using FirstOne.Cadastros.Domain.Entities;
 using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Infra.Data.Context;
-using System;
+using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace FirstOne.Cadastros.Infra.Data.Repository
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private readonly MongoDbContext _mongoDbContext;
+        private readonly SQLServerContext _context;
 
-        public UsuarioRepository()
+        public UsuarioRepository(SQLServerContext context)
         {
-            _mongoDbContext = new MongoDbContext();
+            _context = context;
         }
 
         public void Adicionar(Usuario usuario)
         {
-            _mongoDbContext.Usuarios.InsertOne(usuario);
+            _context.Usuario.Add(usuario);
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<Usuario> ObterTodos()
+        {
+            return _context.Usuario.AsNoTracking()
+                .Include(x => x.Pessoa)
+                .ToList();
         }
     }
 }

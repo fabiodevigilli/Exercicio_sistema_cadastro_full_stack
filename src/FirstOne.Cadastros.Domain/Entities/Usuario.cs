@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FirstOne.Cadastros.Domain.Entities
 {
-        
+
     public class Usuario : EntidadeBase
     {
-        public string Email { get; }
-        public string Senha { get; }
-        public Guid PessoaId { get; }
+        public string Email { get; private set; }
+        public string Senha { get; private set; }
+        public Guid PessoaId { get; private set; }
+        public virtual Pessoa Pessoa { get; private set; }
 
         public Usuario(Guid id, string email, string senha, Guid pessoaId)
         {
@@ -18,5 +17,7 @@ namespace FirstOne.Cadastros.Domain.Entities
             Senha = senha;
             PessoaId = pessoaId;
         }
+
+        protected Usuario() { }
     }
 }

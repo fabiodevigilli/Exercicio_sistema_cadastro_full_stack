@@ -4,6 +4,7 @@ using FirstOne.Cadastros.Application.ViewModels;
 using FirstOne.Cadastros.Domain.Commands.UsuarioCommands;
 using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Domain.Mediator;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FirstOne.Cadastros.Application.Services
@@ -12,6 +13,7 @@ namespace FirstOne.Cadastros.Application.Services
     {
         private readonly IMapper _mapper;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IPessoaAppService _pessoaAppService;
 
         public UsuarioAppService(IMapper mapper,
                                 IUsuarioRepository usuarioRepository,
@@ -31,6 +33,11 @@ namespace FirstOne.Cadastros.Application.Services
             }
 
             await _mediatorHandler.EnviarCommand(command);
+        }
+
+        public IEnumerable<UsuarioViewModel> ObterTodos()
+        {
+            return _mapper.Map<IEnumerable<UsuarioViewModel>>(_usuarioRepository.ObterTodos());
         }
     }
 }
