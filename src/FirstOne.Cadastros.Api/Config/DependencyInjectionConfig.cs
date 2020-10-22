@@ -15,6 +15,10 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using FirstOne.Cadastros.Domain.Commands.UsuarioCommands;
 using Microsoft.EntityFrameworkCore;
+using FirstOne.Cadastros.Application.Token;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace FirstOne.Cadastros.Api.Config
 {
@@ -52,6 +56,30 @@ namespace FirstOne.Cadastros.Api.Config
             services.AddScoped<SQLServerContext>();
 
             services.AddDbContext<SQLServerContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            // TokenSettings
+            var tokenSettingsSection = configuration.GetSection("TokenSettings");
+            services.Configure<TokenSettings>(tokenSettingsSection);
+            var tokenSettings = tokenSettingsSection.Get<TokenSettings>();
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = true;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(tokenSettings.Secret)),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidIssuer = tokenSettings.Issuer,
+                    ValidAudience = tokenSettings.Audience
+                };
+            });
         }
     }
 }

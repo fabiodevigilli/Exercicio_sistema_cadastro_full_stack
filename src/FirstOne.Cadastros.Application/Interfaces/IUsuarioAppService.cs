@@ -7,6 +7,7 @@ namespace FirstOne.Cadastros.Application.Interfaces
     public interface IUsuarioAppService
     {
         Task Adicionar(UsuarioViewModel usuarioViewModel);
+        string Login(string email, string password);
         IEnumerable<UsuarioViewModel> ObterTodos();
     }
 }
