@@ -1,9 +1,11 @@
-﻿using FirstOne.Cadastros.Application.Interfaces;
+﻿using FirstOne.Cadastros.Api.Config;
+using FirstOne.Cadastros.Application.Interfaces;
 using FirstOne.Cadastros.Application.ViewModels;
 using FirstOne.Cadastros.Domain.Messaging;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -22,6 +24,7 @@ namespace FirstOne.Cadastros.Api.Controllers
         }
 
         [HttpPost]
+        [ClaimsAuthorize("Usuario", "Adicionar")]
         public async Task<IActionResult> Adicionar([FromBody] UsuarioViewModel usuarioViewmodel)
         {
             await _usuarioAppService.Adicionar(usuarioViewmodel);
@@ -30,6 +33,7 @@ namespace FirstOne.Cadastros.Api.Controllers
         }
 
         [HttpGet]
+        [ClaimsAuthorize("Usuario", "ObterTodos")]
         public IEnumerable<UsuarioViewModel> ObterTodos()
         {
             return _usuarioAppService.ObterTodos();
@@ -47,6 +51,19 @@ namespace FirstOne.Cadastros.Api.Controllers
             }
 
             return Ok(new { token });
+        }
+
+        [HttpPost("permissoes")]
+        public IActionResult AdicionarPermissoes([FromBody] UsuarioPermissoesViewmodel usuarioPermissoesViewmodel)
+        {
+            _usuarioAppService.AdicionarPermissoes(usuarioPermissoesViewmodel);
+            return Ok();
+        }
+
+        [HttpGet("permissoes/{usuarioId}")]
+        public UsuarioPermissoesViewmodel ObterPermissoes(Guid usuarioId)
+        {
+            return _usuarioAppService.ObterPermissoes(usuarioId);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FirstOne.Cadastros.Application.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,5 +10,7 @@ namespace FirstOne.Cadastros.Application.Interfaces
         Task Adicionar(UsuarioViewModel usuarioViewModel);
         string Login(string email, string password);
         IEnumerable<UsuarioViewModel> ObterTodos();
+        void AdicionarPermissoes(UsuarioPermissoesViewmodel usuarioPermissoesViewmodel);
+        UsuarioPermissoesViewmodel ObterPermissoes(Guid usuarioid);
     }
 }

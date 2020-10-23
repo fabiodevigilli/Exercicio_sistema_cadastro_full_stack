@@ -86,5 +86,30 @@ namespace FirstOne.Cadastros.Application.Services
 
             return tokenHandler.WriteToken(token);
         }
+
+        public void AdicionarPermissoes(UsuarioPermissoesViewmodel usuarioPermissoesViewmodel)
+        {
+            foreach (var permissao in usuarioPermissoesViewmodel.Permissoes)
+            {
+               _usuarioRepository.AdicionarPermissoes(usuarioPermissoesViewmodel.UsuarioId, permissao.Rotinas, string.Join(",", permissao.Values));
+            }
+            
+        }
+
+        public UsuarioPermissoesViewmodel ObterPermissoes(Guid usuarioid)
+        {
+            var permissoesUsuario = _usuarioRepository.ObterPermissoes(usuarioid);
+            var usuarioPermissoesViewmodel = new List<PermissoesViewModel>();
+            foreach (var permissoes in permissoesUsuario)
+            {
+                usuarioPermissoesViewmodel.Add(new PermissoesViewModel() 
+                { 
+                    Rotinas = permissoes.RotinaEntidades, 
+                    Values = permissoes.Permissao.Split(",") 
+                });
+            }
+
+            return new UsuarioPermissoesViewmodel { UsuarioId = usuarioid, Permissoes = usuarioPermissoesViewmodel };
+        }
     }
 }

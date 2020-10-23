@@ -1,4 +1,5 @@
 ﻿using FirstOne.Cadastros.Domain.Entities;
+using FirstOne.Cadastros.Domain.Enums;
 using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,28 @@ namespace FirstOne.Cadastros.Infra.Data.Repository
         public IEnumerable<Usuario> Search(Expression<Func<Usuario, bool>> predicate)
         {
             return _context.Usuario.AsNoTracking().Where(predicate).ToList();
+        }
+
+        public void AdicionarPermissoes(Guid usuarioId, RotinaEntidades rotinas, string values)
+        {
+            var permissao = _context.PermissoesUsuario.Where(x => x.UsuarioId == usuarioId && x.RotinaEntidades == rotinas).FirstOrDefault();
+            if (permissao == null)
+            {
+                var permissoesUsuario = new PermissoesUsuario(Guid.NewGuid(), usuarioId, rotinas, values);
+                _context.PermissoesUsuario.Add(permissoesUsuario);
+            }
+            else
+            {
+                var permissoesUsuario = new PermissoesUsuario(permissao.Id, usuarioId, rotinas, values);
+                _context.PermissoesUsuario.Update(permissoesUsuario);
+            }
+
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<PermissoesUsuario> ObterPermissoes(Guid usuarioid)
+        {
+            return _context.PermissoesUsuario.AsNoTracking().Where(x => x.UsuarioId == usuarioid).ToList();
         }
     }
 }

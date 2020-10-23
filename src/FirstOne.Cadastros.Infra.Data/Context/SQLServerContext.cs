@@ -9,5 +9,6 @@ namespace FirstOne.Cadastros.Infra.Data.Context
 
         public DbSet<Pessoa> Pessoa { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<PermissoesUsuario> PermissoesUsuario { get; set; }
     }
 }
