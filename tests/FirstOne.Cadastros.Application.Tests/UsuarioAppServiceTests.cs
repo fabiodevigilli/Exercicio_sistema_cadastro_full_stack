@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using FirstOne.Cadastros.Application.AutoMapper;
-using FirstOne.Cadastros.Application.Services;
+﻿using FirstOne.Cadastros.Application.Services;
 using FirstOne.Cadastros.Application.ViewModels;
 using FirstOne.Cadastros.Domain.Commands.UsuarioCommands;
-using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Domain.Mediator;
 using FirstOne.Cadastros.Domain.Messaging;
 using FirstOne.Cadastros.Domain.Validations;
@@ -23,15 +20,7 @@ namespace FirstOne.Cadastros.Application.Tests
         public UsuarioAppServiceTests()
         {
             _autoMocker = new AutoMocker();
-
-            var mapper = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new DomainToViewModelMappingProfile());
-            }).CreateMapper();
-            var usuarioRepository = _autoMocker.GetMock<IUsuarioRepository>();
-            var mediatorHandler = _autoMocker.GetMock<IMediatorHandler>();
-
-            _usuarioAppService = new UsuarioAppService(mapper, usuarioRepository.Object, mediatorHandler.Object);
+            _usuarioAppService = _autoMocker.CreateInstance<UsuarioAppService>();
         }
 
         [Fact(DisplayName = "Deve_Adicionar_Usuario")]

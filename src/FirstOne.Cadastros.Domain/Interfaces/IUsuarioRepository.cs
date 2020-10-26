@@ -11,7 +11,8 @@ namespace FirstOne.Cadastros.Domain.Interfaces
         void Adicionar(Usuario usuario);
         IEnumerable<Usuario> Search(Expression<Func<Usuario, bool>> predicate);
         IEnumerable<Usuario> ObterTodos();
-        void AdicionarPermissoes(Guid usuarioId, RotinaEntidades rotinas, string values);
-        IEnumerable<PermissoesUsuario> ObterPermissoes(Guid usuarioid);
+        void AdicionarClaim(UsuarioClaim usuarioClaim);
+        void RemoverClaim(UsuarioClaim usuarioClaim);
+       // IEnumerable<UsuarioClaim> ObterPermissoes(Guid usuarioid);
     }
 }

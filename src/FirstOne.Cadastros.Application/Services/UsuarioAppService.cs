@@ -54,7 +54,7 @@ namespace FirstOne.Cadastros.Application.Services
         public string Login(string email, string password)
         {
             var usuario = _usuarioRepository.Search(x => x.Email == email && x.Senha == password).FirstOrDefault();
-
+            
             if (usuario == null)
             {
                 return null;
@@ -69,12 +69,13 @@ namespace FirstOne.Cadastros.Application.Services
             {
                 new Claim(ClaimTypes.Email, usuario.Email)
             };
+           
+            claims.AddRange(usuario.UsuarioClaims.Select(claim => new Claim(Convert.ToString(claim.Entidade), claim.Endpoint)));
 
             var claimdIdentity = new ClaimsIdentity();
             claimdIdentity.AddClaims(claims);
 
-            var tokenHandler = new JwtSecurityTokenHandler();           
-
+            var tokenHandler = new JwtSecurityTokenHandler();          
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = _tokenSettings.Issuer,
@@ -87,29 +88,35 @@ namespace FirstOne.Cadastros.Application.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public void AdicionarPermissoes(UsuarioPermissoesViewmodel usuarioPermissoesViewmodel)
+        public void AdicionarClaims(UsuarioClaimViewmodel usuarioClaimViewmodel)
         {
-            foreach (var permissao in usuarioPermissoesViewmodel.Permissoes)
-            {
-               _usuarioRepository.AdicionarPermissoes(usuarioPermissoesViewmodel.UsuarioId, permissao.Rotinas, string.Join(",", permissao.Values));
-            }
+            var usuario = _usuarioRepository.Search(x => x.Id == usuarioClaimViewmodel.UsuarioId).FirstOrDefault();
             
-        }
-
-        public UsuarioPermissoesViewmodel ObterPermissoes(Guid usuarioid)
-        {
-            var permissoesUsuario = _usuarioRepository.ObterPermissoes(usuarioid);
-            var usuarioPermissoesViewmodel = new List<PermissoesViewModel>();
-            foreach (var permissoes in permissoesUsuario)
+            foreach (var claim in usuario.UsuarioClaims)
             {
-                usuarioPermissoesViewmodel.Add(new PermissoesViewModel() 
-                { 
-                    Rotinas = permissoes.RotinaEntidades, 
-                    Values = permissoes.Permissao.Split(",") 
-                });
+                _usuarioRepository.RemoverClaim(claim);
             }
 
-            return new UsuarioPermissoesViewmodel { UsuarioId = usuarioid, Permissoes = usuarioPermissoesViewmodel };
+            foreach (var claim in usuarioClaimViewmodel.UsuarioClaims)
+            {
+                _usuarioRepository.AdicionarClaim(new UsuarioClaim(Guid.NewGuid(), usuarioClaimViewmodel.UsuarioId, claim.Entidade, claim.Endpoint));    
+            }
         }
+
+        //public UsuarioPermissoesViewmodel ObterPermissoes(Guid usuarioid)
+        //{
+        //    var permissoesUsuario = _usuarioRepository.ObterPermissoes(usuarioid);
+        //    var usuarioPermissoesViewmodel = new List<PermissoesViewModel>();
+        //    foreach (var permissoes in permissoesUsuario)
+        //    {
+        //        usuarioPermissoesViewmodel.Add(new PermissoesViewModel() 
+        //        { 
+        //            Rotinas = permissoes.RotinaEntidades, 
+        //            Values = permissoes.Permissao.Split(",") 
+        //        });
+        //    }
+
+        //    return new UsuarioPermissoesViewmodel { UsuarioId = usuarioid, Permissoes = usuarioPermissoesViewmodel };
+        //}
     }
 }

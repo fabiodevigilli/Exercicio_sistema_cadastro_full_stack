@@ -35,29 +35,24 @@ namespace FirstOne.Cadastros.Infra.Data.Repository
 
         public IEnumerable<Usuario> Search(Expression<Func<Usuario, bool>> predicate)
         {
-            return _context.Usuario.AsNoTracking().Where(predicate).ToList();
+            return _context.Usuario.AsNoTracking().Include(x => x.UsuarioClaims).Where(predicate).ToList();
         }
 
-        public void AdicionarPermissoes(Guid usuarioId, RotinaEntidades rotinas, string values)
+        public void AdicionarClaim(UsuarioClaim usuarioClaim)
         {
-            var permissao = _context.PermissoesUsuario.Where(x => x.UsuarioId == usuarioId && x.RotinaEntidades == rotinas).FirstOrDefault();
-            if (permissao == null)
-            {
-                var permissoesUsuario = new PermissoesUsuario(Guid.NewGuid(), usuarioId, rotinas, values);
-                _context.PermissoesUsuario.Add(permissoesUsuario);
-            }
-            else
-            {
-                var permissoesUsuario = new PermissoesUsuario(permissao.Id, usuarioId, rotinas, values);
-                _context.PermissoesUsuario.Update(permissoesUsuario);
-            }
-
+            _context.UsuarioClaim.Add(usuarioClaim);
             _context.SaveChanges();
         }
 
-        public IEnumerable<PermissoesUsuario> ObterPermissoes(Guid usuarioid)
+        public void RemoverClaim(UsuarioClaim usuarioClaim)
         {
-            return _context.PermissoesUsuario.AsNoTracking().Where(x => x.UsuarioId == usuarioid).ToList();
+            _context.UsuarioClaim.Remove(usuarioClaim);
+            _context.SaveChanges();
         }
+
+        //public IEnumerable<UsuarioClaim> ObterPermissoes(Guid usuarioid)
+        //{
+        //    return _context.PermissoesUsuario.AsNoTracking().Where(x => x.UsuarioId == usuarioid).ToList();
+        //}
     }
 }

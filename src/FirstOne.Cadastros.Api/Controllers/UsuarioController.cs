@@ -5,7 +5,6 @@ using FirstOne.Cadastros.Domain.Messaging;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -54,16 +53,16 @@ namespace FirstOne.Cadastros.Api.Controllers
         }
 
         [HttpPost("permissoes")]
-        public IActionResult AdicionarPermissoes([FromBody] UsuarioPermissoesViewmodel usuarioPermissoesViewmodel)
+        public IActionResult AdicionarPermissoes([FromBody] UsuarioClaimViewmodel usuarioPermissoesViewmodel)
         {
-            _usuarioAppService.AdicionarPermissoes(usuarioPermissoesViewmodel);
+            _usuarioAppService.AdicionarClaims(usuarioPermissoesViewmodel);
             return Ok();
         }
 
-        [HttpGet("permissoes/{usuarioId}")]
-        public UsuarioPermissoesViewmodel ObterPermissoes(Guid usuarioId)
-        {
-            return _usuarioAppService.ObterPermissoes(usuarioId);
-        }
+        //[HttpGet("permissoes/{usuarioId}")]
+        //public UsuarioClaimViewmodel ObterPermissoes(Guid usuarioId)
+        //{
+        //    return _usuarioAppService.ObterPermissoes(usuarioId);
+        //}
     }
 }
