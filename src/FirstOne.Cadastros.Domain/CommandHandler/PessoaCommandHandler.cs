@@ -25,6 +25,7 @@ namespace FirstOne.Cadastros.Domain.CommandHandler
         {
             var pessoa = new Pessoa(Guid.NewGuid(), request.Nome);
             _pessoaRepository.Adicionar(pessoa);
+            await _pessoaRepository.UnitOfWork.Commit();
 
             return Unit.Value;
         }
@@ -33,6 +34,7 @@ namespace FirstOne.Cadastros.Domain.CommandHandler
         {
             var pessoa = new Pessoa(request.Id, request.Nome);
             _pessoaRepository.Atualizar(pessoa);
+            await _pessoaRepository.UnitOfWork.Commit();
 
             return Unit.Value;
         }
@@ -40,6 +42,7 @@ namespace FirstOne.Cadastros.Domain.CommandHandler
         public async Task<Unit> Handle(RemoverPessoaCommand request, CancellationToken cancellationToken)
         {
             _pessoaRepository.Remover(request.Id);
+            await _pessoaRepository.UnitOfWork.Commit();
 
             return Unit.Value;
         }

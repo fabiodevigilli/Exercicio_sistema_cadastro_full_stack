@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace FirstOne.Cadastros.Domain.Interfaces
 {
-    public interface IUsuarioRepository
+    public interface IUsuarioRepository : IRepository
     {
         void Adicionar(Usuario usuario);
         IEnumerable<Usuario> Search(Expression<Func<Usuario, bool>> predicate);

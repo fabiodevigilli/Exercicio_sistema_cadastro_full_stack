@@ -11,19 +11,13 @@ using System.Linq.Expressions;
 
 namespace FirstOne.Cadastros.Infra.Data.Repository
 {
-    public class UsuarioRepository : IUsuarioRepository
+    public class UsuarioRepository : Repository, IUsuarioRepository
     {
-        private readonly SQLServerContext _context;
-
-        public UsuarioRepository(SQLServerContext context)
-        {
-            _context = context;
-        }
+        public UsuarioRepository(SQLServerContext context) : base(context) { }
 
         public void Adicionar(Usuario usuario)
         {
             _context.Usuario.Add(usuario);
-            _context.SaveChanges();
         }
 
         public IEnumerable<Usuario> ObterTodos()
@@ -41,13 +35,11 @@ namespace FirstOne.Cadastros.Infra.Data.Repository
         public void AdicionarClaim(UsuarioClaim usuarioClaim)
         {
             _context.UsuarioClaim.Add(usuarioClaim);
-            _context.SaveChanges();
         }
 
         public void RemoverClaim(UsuarioClaim usuarioClaim)
         {
             _context.UsuarioClaim.Remove(usuarioClaim);
-            _context.SaveChanges();
         }
 
         //public IEnumerable<UsuarioClaim> ObterPermissoes(Guid usuarioid)

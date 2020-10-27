@@ -10,7 +10,7 @@ namespace FirstOne.Cadastros.Application.Interfaces
         Task Adicionar(UsuarioViewModel usuarioViewModel);
         string Login(string email, string password);
         IEnumerable<UsuarioViewModel> ObterTodos();
-        void AdicionarClaims(UsuarioClaimViewmodel usuarioPermissoesViewmodel);
+        Task AtualizarClaims(UsuarioClaimViewmodel usuarioPermissoesViewmodel);
         // UsuarioPermissoesViewmodel ObterPermissoes(Guid usuarioid);
     }
 }

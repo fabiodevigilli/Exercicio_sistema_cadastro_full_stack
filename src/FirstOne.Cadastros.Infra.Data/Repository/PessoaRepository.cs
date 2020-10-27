@@ -9,31 +9,23 @@ using System.Linq;
 
 namespace FirstOne.Cadastros.Infra.Data.Repository
 {
-    public class PessoaRepository : IPessoaRepository
+    public class PessoaRepository : Repository, IPessoaRepository
     {
-        private readonly SQLServerContext _context;
-
-        public PessoaRepository(SQLServerContext context)
-        {
-            _context = context;
-        }
+        public PessoaRepository(SQLServerContext context) : base(context) { }
 
         public void Adicionar(Pessoa pessoa)
         {
             _context.Pessoa.Add(pessoa);
-            _context.SaveChanges();
         }
 
         public void Atualizar(Pessoa pessoa)
         {
             _context.Pessoa.Update(pessoa);
-            _context.SaveChanges();
         }
 
         public void Remover(Guid id)
         {
             _context.Pessoa.Remove(ObterPorId(id));
-            _context.SaveChanges();
         }
 
         public IEnumerable<Pessoa> ObterTodos()

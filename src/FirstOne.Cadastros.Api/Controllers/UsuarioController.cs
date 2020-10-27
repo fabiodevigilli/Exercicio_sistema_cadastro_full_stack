@@ -52,10 +52,11 @@ namespace FirstOne.Cadastros.Api.Controllers
             return Ok(new { token });
         }
 
-        [HttpPost("permissoes")]
-        public IActionResult AdicionarPermissoes([FromBody] UsuarioClaimViewmodel usuarioPermissoesViewmodel)
+        [HttpPost("claims")]
+        [ClaimsAuthorize("Usuario", "Claims")]
+        public async Task<IActionResult> AtualizarPermissoes([FromBody] UsuarioClaimViewmodel usuarioPermissoesViewmodel)
         {
-            _usuarioAppService.AdicionarClaims(usuarioPermissoesViewmodel);
+            await _usuarioAppService.AtualizarClaims(usuarioPermissoesViewmodel);
             return Ok();
         }
 

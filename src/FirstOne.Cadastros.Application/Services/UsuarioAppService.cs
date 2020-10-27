@@ -88,7 +88,7 @@ namespace FirstOne.Cadastros.Application.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public void AdicionarClaims(UsuarioClaimViewmodel usuarioClaimViewmodel)
+        public async Task AtualizarClaims(UsuarioClaimViewmodel usuarioClaimViewmodel)
         {
             var usuario = _usuarioRepository.Search(x => x.Id == usuarioClaimViewmodel.UsuarioId).FirstOrDefault();
             
@@ -101,6 +101,8 @@ namespace FirstOne.Cadastros.Application.Services
             {
                 _usuarioRepository.AdicionarClaim(new UsuarioClaim(Guid.NewGuid(), usuarioClaimViewmodel.UsuarioId, claim.Entidade, claim.Endpoint));    
             }
+
+            await _usuarioRepository.UnitOfWork.Commit();
         }
 
         //public UsuarioPermissoesViewmodel ObterPermissoes(Guid usuarioid)
