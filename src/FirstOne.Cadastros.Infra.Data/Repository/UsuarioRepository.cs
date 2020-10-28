@@ -1,5 +1,4 @@
 ﻿using FirstOne.Cadastros.Domain.Entities;
-using FirstOne.Cadastros.Domain.Enums;
 using FirstOne.Cadastros.Domain.Interfaces;
 using FirstOne.Cadastros.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +23,7 @@ namespace FirstOne.Cadastros.Infra.Data.Repository
         {
             return _context.Usuario.AsNoTracking()
                 .Include(x => x.Pessoa)
+                .Include(x => x.UsuarioClaims)
                 .ToList();
         }
 

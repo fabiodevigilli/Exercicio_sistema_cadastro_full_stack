@@ -10,6 +10,7 @@ namespace FirstOne.Cadastros.Application.AutoMapper
         {
             CreateMap<Pessoa, PessoaViewModel>();
             CreateMap<Usuario, UsuarioViewModel>();
+            CreateMap<UsuarioClaim, ClaimViewModel>();
         }
     }
 }
