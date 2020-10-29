@@ -29,6 +29,10 @@ namespace FirstOne.Cadastros.Domain.Tests.CommandHandlerTests
             // Arrange
             var adicionarPessoaCommand = new AdicionarPessoaCommand("Pessoa 1");
 
+            _autoMocker.GetMock<IPessoaRepository>()
+                .Setup(e => e.UnitOfWork)
+                .Returns(_autoMocker.GetMock<IUnitOfWork>().Object);
+
             // Act
             var result = await _pessoaCommandHandler.Handle(adicionarPessoaCommand, CancellationToken.None);
 
@@ -43,6 +47,10 @@ namespace FirstOne.Cadastros.Domain.Tests.CommandHandlerTests
             // Arrange
             var command = new AtualizarPessoaCommand(Guid.NewGuid(), "Pessoa 1");
 
+            _autoMocker.GetMock<IPessoaRepository>()
+                .Setup(e => e.UnitOfWork)
+                .Returns(_autoMocker.GetMock<IUnitOfWork>().Object);
+
             // Act
             var result = await _pessoaCommandHandler.Handle(command, CancellationToken.None);
 
@@ -56,6 +64,10 @@ namespace FirstOne.Cadastros.Domain.Tests.CommandHandlerTests
         {
             // Arrange
             var command = new RemoverPessoaCommand(Guid.NewGuid());
+
+            _autoMocker.GetMock<IPessoaRepository>()
+                .Setup(e => e.UnitOfWork)
+                .Returns(_autoMocker.GetMock<IUnitOfWork>().Object);
 
             // Act
             var result = await _pessoaCommandHandler.Handle(command, CancellationToken.None);

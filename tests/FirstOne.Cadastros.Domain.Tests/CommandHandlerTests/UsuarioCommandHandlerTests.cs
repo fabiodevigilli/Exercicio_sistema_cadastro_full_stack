@@ -29,6 +29,10 @@ namespace FirstOne.Cadastros.Domain.Tests.CommandHandlerTests
             // Arrange
             var command = new AdicionarUsuarioCommand("fulano@hbsis.com.br", "1234", Guid.NewGuid());
 
+            _autoMocker.GetMock<IUsuarioRepository>()
+                .Setup(e => e.UnitOfWork)
+                .Returns(_autoMocker.GetMock<IUnitOfWork>().Object);
+
             // Act
             await _usuarioCommandHandler.Handle(command, CancellationToken.None);
 
