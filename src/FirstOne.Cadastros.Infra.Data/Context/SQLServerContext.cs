@@ -26,7 +26,7 @@ namespace FirstOne.Cadastros.Infra.Data.Context
                 );
 
             modelBuilder.Entity<Usuario>().HasData(
-                new Usuario(Guid.Parse("fc127929-ef16-4287-96ce-c8e2c8a051c2"), "teste@teste.com", "teste", Guid.Parse("cf56b7e5-390f-44a4-b44b-9517f7e619ba"))
+                new Usuario(Guid.Parse("fc127929-ef16-4287-96ce-c8e2c8a051c2"), "teste@teste.com", "teste", Guid.Parse("cf56b7e5-390f-44a4-b44b-9517f7e619ba"), "Gestor")
                 );
 
             modelBuilder.Entity<UsuarioClaim>().HasData(

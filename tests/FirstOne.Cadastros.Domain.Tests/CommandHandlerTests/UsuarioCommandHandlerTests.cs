@@ -27,7 +27,7 @@ namespace FirstOne.Cadastros.Domain.Tests.CommandHandlerTests
         public async Task Adicionar_Deve_Executar_Com_Sucesso()
         {
             // Arrange
-            var command = new AdicionarUsuarioCommand("fulano@hbsis.com.br", "1234", Guid.NewGuid());
+            var command = new AdicionarUsuarioCommand("fulano@hbsis.com.br", "1234", Guid.NewGuid(), "Gestor");
 
             _autoMocker.GetMock<IUsuarioRepository>()
                 .Setup(e => e.UnitOfWork)

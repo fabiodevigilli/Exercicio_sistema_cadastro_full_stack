@@ -8,12 +8,14 @@ namespace FirstOne.Cadastros.Domain.Commands.UsuarioCommands
         public string Email { get; }
         public string Senha { get; }
         public Guid PessoaId { get; }
+        public string Role { get; }
 
-        public AdicionarUsuarioCommand(string email, string senha, Guid pessoaId)
+        public AdicionarUsuarioCommand(string email, string senha, Guid pessoaId, string role)
         {
             Email = email;
             Senha = senha;
             PessoaId = pessoaId;
+            Role = role;
         }
 
         public override bool IsValid()

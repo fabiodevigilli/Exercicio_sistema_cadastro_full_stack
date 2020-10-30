@@ -23,7 +23,7 @@ namespace FirstOne.Cadastros.Domain.CommandHandler
 
         public async Task<Unit> Handle(AdicionarUsuarioCommand request, CancellationToken cancellationToken)
         {
-            var usuario = new Usuario(Guid.NewGuid(),request.Email, request.Senha, request.PessoaId);
+            var usuario = new Usuario(Guid.NewGuid(),request.Email, request.Senha, request.PessoaId, request.Role);
             _usuarioRepository.Adicionar(usuario);
             await _usuarioRepository.UnitOfWork.Commit();
 

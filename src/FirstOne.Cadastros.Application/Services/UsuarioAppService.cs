@@ -36,7 +36,7 @@ namespace FirstOne.Cadastros.Application.Services
 
         public async Task Adicionar(UsuarioViewModel usuarioViewModel)
         {
-            var command = new AdicionarUsuarioCommand(usuarioViewModel.Email, usuarioViewModel.Senha, usuarioViewModel.PessoaId);
+            var command = new AdicionarUsuarioCommand(usuarioViewModel.Email, usuarioViewModel.Senha, usuarioViewModel.PessoaId, usuarioViewModel.Role);
             if (!command.IsValid())
             {
                 await PublicarErrosDeValidacao(command);
@@ -67,7 +67,9 @@ namespace FirstOne.Cadastros.Application.Services
         {
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Email, usuario.Email)
+                new Claim(ClaimTypes.Email, usuario.Email),
+               // new Claim(ClaimTypes.Role, usuario.Role)
+               new Claim("Role", usuario.Role)
             };
            
             claims.AddRange(usuario.UsuarioClaims.Select(claim => new Claim(Convert.ToString(claim.Entidade), claim.Endpoint)));

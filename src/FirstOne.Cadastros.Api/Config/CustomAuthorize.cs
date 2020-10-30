@@ -10,8 +10,13 @@ namespace FirstOne.Cadastros.Api.Config
     {
         public static bool ValidateUsuarioClaims(HttpContext httpContext, string claimName, string claimValue)
         {
-            return httpContext.User.Identity.IsAuthenticated &&
-                httpContext.User.Claims.Any(x => x.Type == claimName && x.Value.Contains(claimValue));
+            var cargosNecessario = claimValue.Trim().Split(",");
+            var cargosUsuario = httpContext.User.Claims.FirstOrDefault(x => x.Type == claimName).Value.Split(",");
+            var temCargo = cargosUsuario.Any(c => cargosNecessario.Select(s => s).Contains(c));
+            return httpContext.User.Identity.IsAuthenticated && temCargo;
+
+            //return httpContext.User.Identity.IsAuthenticated &&
+            //    httpContext.User.Claims.Any(x => x.Type == claimName && x.Value.Contains(claimValue));
         }
     }
 

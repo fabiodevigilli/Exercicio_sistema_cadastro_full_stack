@@ -24,21 +24,24 @@ namespace FirstOne.Cadastros.Api.Controllers
         }
 
         [HttpGet]
-        [ClaimsAuthorize("Pessoa", "ObterTodos")]
+        //[ClaimsAuthorize("Pessoa", "ObterTodos")]
+        [ClaimsAuthorize("Role", "Gestor,Borracheiro")]
         public IEnumerable<PessoaViewModel> ObterTodos()
         {
             return _pessoaAppService.ObterTodos();
         }
 
         [HttpGet("{id}")]
-        [ClaimsAuthorize("Pessoa", "ObterPorId")]
+        //[ClaimsAuthorize("Pessoa", "ObterPorId")]
+        [Authorize(Roles = "Gestor")]
         public PessoaViewModel ObterPorId(Guid id)
         {
             return _pessoaAppService.ObterPorId(id);
         }
 
         [HttpPost]
-        [ClaimsAuthorize("Pessoa", "Adicionar")]
+        //[ClaimsAuthorize("Pessoa", "Adicionar")]
+        [Authorize(Roles = "Gestor")]
         public async Task<IActionResult> Adicionar([FromBody] PessoaViewModel pessoaViewmodel)
         {
             await _pessoaAppService.Adicionar(pessoaViewmodel);
@@ -47,7 +50,8 @@ namespace FirstOne.Cadastros.Api.Controllers
         }
 
         [HttpPut]
-        [ClaimsAuthorize("Pessoa", "Atualizar")]
+        //[ClaimsAuthorize("Pessoa", "Atualizar")]
+        [Authorize(Roles = "Gestor")]
         public async Task<IActionResult> Atualizar([FromBody] PessoaViewModel pessoaViewmodel)
         {
             await _pessoaAppService.Atualizar(pessoaViewmodel);
@@ -56,7 +60,8 @@ namespace FirstOne.Cadastros.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        [ClaimsAuthorize("Pessoa", "Remover")]
+        //[ClaimsAuthorize("Pessoa", "Remover")]
+        [Authorize(Roles = "Gestor")]
         public async Task<IActionResult> Remover(Guid id)
         {
             await _pessoaAppService.Remover(id);

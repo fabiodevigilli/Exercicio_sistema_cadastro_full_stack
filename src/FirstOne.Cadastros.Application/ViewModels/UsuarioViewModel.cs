@@ -11,5 +11,6 @@ namespace FirstOne.Cadastros.Application.ViewModels
         public Guid PessoaId { get; set; }
         public PessoaViewModel Pessoa { get; set; }
         public IEnumerable<ClaimViewModel> UsuarioClaims { get; set; }
+        public string Role { get; set; }
     }
 }
