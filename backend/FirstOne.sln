@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstOne.Cadastros.Domain.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstOne.Cadastros.Application.Tests", "tests\FirstOne.Cadastros.Application.Tests\FirstOne.Cadastros.Application.Tests.csproj", "{D981F671-F800-42AA-9C44-2653C271D53C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstOne.Cadastros.Api.Tests", "tests\FirstOne.Cadastros.Api.Tests\FirstOne.Cadastros.Api.Tests.csproj", "{FF4FD39B-BC3D-4932-9062-D942C13E539F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FirstOne.Cadastros.Api.Tests", "tests\FirstOne.Cadastros.Api.Tests\FirstOne.Cadastros.Api.Tests.csproj", "{FF4FD39B-BC3D-4932-9062-D942C13E539F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
