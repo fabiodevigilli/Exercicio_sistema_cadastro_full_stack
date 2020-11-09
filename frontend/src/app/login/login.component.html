@@ -1,3 +1,36 @@
-<p>
-  login works!
-</p>
+<div class="col-md-3 offset-md-5 mt-5">
+  <!-- <div class="alert alert-info" style="width: 18rem;">
+      Email: test<br />
+      Password: test
+  </div> -->
+  <div class="card" >
+      <div class="card-header">
+          <img class="card-img-top" style="width: 50px;" src="assets/images/firstone-removebg-preview.png">
+      </div>
+      <div class="card-body">
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="text" formControlName="email" class="form-control"
+                      [ngClass]="{ 'is-invalid': controls.email.touched && controls.email.errors }" />
+                  <div *ngIf="controls.email.touched && controls.email.errors" class="invalid-feedback">
+                      <div *ngIf="controls.email.errors.required">Email is required</div>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" formControlName="password" class="form-control"
+                      [ngClass]="{ 'is-invalid': controls.password.touched && controls.password.errors }" />
+                  <div *ngIf="controls.password.touched && controls.password.errors" class="invalid-feedback">
+                      <div *ngIf="controls.password.errors.required">Password is required</div>
+                  </div>
+              </div>
+              <button [disabled]="!loginForm.invalid || loading" class="btn btn-primary">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                  Login
+              </button>
+              <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+          </form>
+      </div>
+  </div>
+</div>
