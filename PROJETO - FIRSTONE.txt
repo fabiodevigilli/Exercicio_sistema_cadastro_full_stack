@@ -7,6 +7,7 @@ PROJETO - FIRSTONE
 4) Preenchemos o RepositoryName e depois clicamos em "Create Repository";
 
 *** LOCAL
+Para um repositório já feito com arquivos no local
 1) CRIAR PASTA NO REPOSITORIO LOCAL;
 2) NOME = "FistOne";
 3) criado dentro desta pasta um arquivo chamado ".gitignore";
@@ -19,4 +20,24 @@ PROJETO - FIRSTONE
 10) git branch -M main
 11) git remote origin https://github.com/fabiodevigilli/FirstOne.git
 12) git push -u origin main
-13) dotnet new sln -n FirstOne
+13) dotnet new sln -n FirstOne (criar projeto do backend)
+
+14) No cmd, Para criar frontend: ng new "nome da pasta" (criar pasta do frontend)
+
+
+OU
+
+Para Repositório criado novo (do zero)
+1) git clone https://github.com/fabiodevigilli/AngularPrimeiroProjeto.git
+2) criamos o "README.md" e ".gitignore"
+3) git add .
+4) git commit -m "first commit"
+5) git push
+6)No cmd, Para criar frontend: ng new "nome da pasta" (criar pasta do frontend)
+7) Para rodar o projeto: ng serve --open (vai abrir a página do navegador)
+8) Abrir o VSCode e abrir a pasta onde está contido o projeto, neste caso, "alurapic"
+
+
+para criar arquivos html, ts e css, automaticamente em uma pasta, fazer: ng g c user/user-form-view (https://angular.io/cli/generate)
+
+frontend => crtl+h (find and replace)
